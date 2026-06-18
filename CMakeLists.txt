@@ -25,8 +25,6 @@ find_package(OpenJPEG REQUIRED)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${DCMTK_INCLUDE_DIRS} ${OPENJPEG_INCLUDE_DIRS})
 LINK_DIRECTORIES(${FMJPEG2K}/lib)
 
-add_definitions(-Dfmjpeg2k_EXPORTS)
-
 set(fmjpeg2k_HEADERS
 	include/fmjpeg2k/djcodecd.h
 	include/fmjpeg2k/djcodece.h
