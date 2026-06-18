@@ -15,7 +15,6 @@
  *
  */
 
-
 #ifndef DL2KDEFINE_H
 #define DL2KDEFINE_H
 
@@ -23,12 +22,10 @@
 
 #include "dcmtk/ofstd/ofdefine.h"
 
-
-#ifdef fmjpeg2k_EXPORTS
-#define FMJPEG2K_EXPORT DCMTK_DECL_EXPORT
-#else
-#define FMJPEG2K_EXPORT DCMTK_DECL_IMPORT
-#endif
-
+// #ifdef fmjpeg2k_EXPORTS
+// #define FMJPEG2K_EXPORT DCMTK_DECL_EXPORT
+// #else
+// #define FMJPEG2K_EXPORT DCMTK_DECL_IMPORT
+// #endif
 
 #endif

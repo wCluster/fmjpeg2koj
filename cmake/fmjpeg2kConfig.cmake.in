@@ -1,38 +1,36 @@
-#-----------------------------------------------------------------------------
-#
-# fmjpeg2kConfig.cmake - CMake configuration file for external projects.
-#
-# This file is configured by fmjpeg2k and used by the Usefmjpeg2k.cmake
-# module to load fmjpeg2k's settings for an external project.
-@fmjpeg2k_CONFIG_INSTALL_ONLY@
-# The fmjpeg2k version number.
-#set(fmjpeg2k_MAJOR_VERSION "@fmjpeg2k_VERSION_MAJOR@")
-#set(fmjpeg2k_MINOR_VERSION "@fmjpeg2k_VERSION_MINOR@")
-#set(fmjpeg2k_BUILD_VERSION "@fmjpeg2k_VERSION_BUILD@")
+@PACKAGE_INIT@
 
-set(FMJPEG2K_LIBRARIES fmjpeg2k)
+include(CMakeFindDependencyMacro)
 
-# The configuration options.
+find_dependency(DCMTK CONFIG)
+find_dependency(OpenJPEG)
+
 set(fmjpeg2k_BUILD_SHARED_LIBS "@BUILD_SHARED_LIBS@")
 
-get_filename_component(SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-if(EXISTS ${SELF_DIR}/fmjpeg2kTargets.cmake)
-  # This is an install tree
-  include(${SELF_DIR}/fmjpeg2kTargets.cmake)
-  get_filename_component(fmjpeg2k_INCLUDE_ROOT "${SELF_DIR}/../../../include" ABSOLUTE)
-  set(FMJPEG2K_INCLUDE_DIRS ${fmjpeg2k_INCLUDE_ROOT})  
+include("${CMAKE_CURRENT_LIST_DIR}/fmjpeg2kTargets.cmake")
+
+# Backward compatible variables.
+
+set(fmjpeg2k_FOUND TRUE)
+
+set(FMJPEG2K_LIBRARIES fmjpeg2k)
+set(fmjpeg2k_LIBRARIES fmjpeg2k)
+
+set(FMJPEG2K_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+set(fmjpeg2k_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+
+# When fmjpeg2k is installed as a static library, users including the headers
+
+# must not see __declspec(dllimport) on fmjpeg2k symbols.
+
+if(NOT fmjpeg2k_BUILD_SHARED_LIBS)
+set(FMJPEG2K_DEFINITIONS FMJPEG2K_STATIC OPJ_STATIC)
+set(fmjpeg2k_DEFINITIONS FMJPEG2K_STATIC OPJ_STATIC)
 else()
-  if(EXISTS ${SELF_DIR}/fmjpeg2kExports.cmake)
-    # This is a build tree
-    set( FMJPEG2K_INCLUDE_DIRS "@CMAKE_SOURCE_DIR@/include")
-
-    include(${SELF_DIR}/fmjpeg2kExports.cmake)
-
-  else()
-    message(FATAL_ERROR "ooops")
-  endif()
+set(FMJPEG2K_DEFINITIONS)
+set(fmjpeg2k_DEFINITIONS)
 endif()
 
-# Backward compatible part:
-set(fmjpeg2k_FOUND       TRUE)
+check_required_components(fmjpeg2k)
+
 message(STATUS "Found fmjpeg2k: ${FMJPEG2K_LIBRARIES}")
